@@ -35,7 +35,28 @@ public class CharacterController : MonoBehaviour
             cameraPos = mainCamera.transform.position;
         }
     }
+    void FixedUpdate()
+    {
+        Bounds colliderBounds = mainCollider.bounds;
+        float colliderRadius = mainCollider.size.x * 0.4f * Mathf.Abs(transform.localScale.x);
+        Vector3 groundCheckPos = colliderBounds.min + new Vector3(colliderBounds.size.x * 0.5f, colliderRadius * 0.9f, 0);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos, colliderRadius);
+        isGrounded = false;
+        if (colliders.Length > 0)
+        {
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i] != mainCollider)
+                {
+                    isGrounded = true;
+                    break;
+                }
+            }
+        }
+        r2d.velocity = new Vector2((moveDirection) * maxSpeed, r2d.velocity.y);
 
+
+    }
     // Update is called once per frame
     void Update()
     {
@@ -80,26 +101,5 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        Bounds colliderBounds = mainCollider.bounds;
-        float colliderRadius = mainCollider.size.x * 0.4f * Mathf.Abs(transform.localScale.x);
-        Vector3 groundCheckPos = colliderBounds.min + new Vector3(colliderBounds.size.x * 0.5f, colliderRadius * 0.9f, 0);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos, colliderRadius);
-        isGrounded = false;
-        if (colliders.Length > 0)
-        {
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                if (colliders[i] != mainCollider)
-                {
-                    isGrounded = true;
-                    break;
-                }
-            }
-        }
-        r2d.velocity = new Vector2((moveDirection) * maxSpeed, r2d.velocity.y);
 
-
-    }
 }
