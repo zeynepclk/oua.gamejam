@@ -1,2 +1,1 @@
 # oua.gamejam
-alıştırma
