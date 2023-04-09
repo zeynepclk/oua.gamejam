@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     State state = State.STATE_IDLE;
     private Rigidbody2D rb2d;
     [SerializeField] private float speed;
+    float coinspeed = 0.25f;
     [SerializeField] private float jumpForce;
     private bool isGrounded;
     [SerializeField] private Transform groundCheck;
@@ -27,11 +28,9 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
     private string currentState;
-    const string idle = "PlayerIdle";
+    const string idle = "Player";
     const string run = "PlayerRun";
     const string jump = "PlayerJump";
-    const string death = "PlayerDeath";
-    const string idleArrow = "PlayerIdleArrow";
     bool facingRight = true;
 
     //Checkpoint
@@ -49,7 +48,9 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = lastCheckpoint;
         ChangeAnimationState(idle);
+        Debug.Log(state);
         state = State.STATE_IDLE;
+        Debug.Log(state);
     }
     void Start()
     {
@@ -80,14 +81,15 @@ public class PlayerController : MonoBehaviour
                 Jump();
                 break;
             case State.STATE_DEATH:
-                ChangeAnimationState(death);
+                reborn();
                 break;
         }
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
         checkScale();
         if (mainCamera)
         {
-            mainCamera.transform.position = new Vector3(t.position.x, cameraPos.y, cameraPos.z);
+            mainCamera.transform.position = new Vector3(t.position.x, (t.position.y+1), cameraPos.z);
         }
     }
     private void checkScale()
@@ -162,6 +164,7 @@ public class PlayerController : MonoBehaviour
         if (trig.CompareTag("Item"))
         {
             Destroy(trig.gameObject);
+            speed += coinspeed;
             itemCount++;
             Debug.Log(itemCount);
         }

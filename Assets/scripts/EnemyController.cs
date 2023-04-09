@@ -9,16 +9,13 @@ public class EnemyController : MonoBehaviour
         STATE_RUN,
         STATE_ATTACK,
         STATE_IDLE,
-        STATE_DEATH
     };
 
     //Animations
     private Animator animator;
     private string currentState;
-    const string idle = "slimeIdleAnim";
-    const string run = "slimeRunAnim";
-    const string attack = "slimeAttackAnim";
-    const string death = "slimeDeathAnim";
+    const string idle = "Enemy";
+    const string run = "EnemyRun";
 
     //Following & CoolDown
     private GameObject player;
@@ -32,10 +29,11 @@ public class EnemyController : MonoBehaviour
     Vector3 movement;
     bool Moveright = false;
     private Vector3 startLocation;
-
+    Transform t;
     Rigidbody2D rb;
     void Start()
     {
+        t = transform;
         startLocation = transform.localPosition;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -58,8 +56,9 @@ public class EnemyController : MonoBehaviour
                 ChangeAnimationState(run);
                 break;
             case State.STATE_ATTACK:
-                ChangeAnimationState(attack);
                 player.GetComponent<PlayerController>().deathState();
+                transform.localPosition = startLocation;
+                state = State.STATE_IDLE;
                 break;
             case State.STATE_IDLE:
                 checkPlayer();

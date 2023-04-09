@@ -5,11 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - ground
+  - Enemy
+  - Item
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
@@ -50,4 +52,7 @@ TagManager:
     locked: 0
   - name: foreground
     uniqueID: 3857596429
+    locked: 0
+  - name: Character
+    uniqueID: 138420141
     locked: 0
