@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask groundLayer;
 
-
+    [SerializeField] public TextMeshProUGUI _text;
     private Animator animator;
     private string currentState;
     const string idle = "Player";
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-            t = transform;
+        t = transform;
             if (mainCamera)
         {
             cameraPos = mainCamera.transform.position;
@@ -164,9 +166,22 @@ public class PlayerController : MonoBehaviour
         if (trig.CompareTag("Item"))
         {
             Destroy(trig.gameObject);
-            speed += coinspeed;
-            itemCount++;
-            Debug.Log(itemCount);
+            scoreUpdate();
         }
+        else if (trig.CompareTag("end"))
+            EndScene();
+        else if (trig.CompareTag("sea"))
+            deathState();
+    }
+    void scoreUpdate()
+    {
+        speed += coinspeed;
+        itemCount++;
+        Debug.Log(itemCount.ToString());
+        _text.text = "Coins: " + itemCount.ToString();
+    }
+    public void EndScene()
+    {
+        SceneManager.LoadScene("EndScene");
     }
 }
