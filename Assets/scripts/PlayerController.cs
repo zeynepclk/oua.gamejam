@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     Transform t;
     Vector3 cameraPos;
     int itemCount;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -171,7 +172,11 @@ public class PlayerController : MonoBehaviour
         else if (trig.CompareTag("end"))
             EndScene();
         else if (trig.CompareTag("sea"))
+        {
+            Debug.Log("dead");
             deathState();
+        }
+          
     }
     void scoreUpdate()
     {
